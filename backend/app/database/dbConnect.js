@@ -8,6 +8,6 @@ await mongoose.connect(mongoUrl)
 console.log("db connection sucessful!")
 }
 catch(error){
-console.log("error while connecting to DB",err)    
+console.log("error while connecting to DB",error)    
 }
 }

@@ -15,7 +15,7 @@ const storySchema=new mongoose.Schema(
             type:String
         },
         postedAt:{
-            type:Date
+            type:String
         }
     }
 )
