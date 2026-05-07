@@ -1,6 +1,6 @@
 const cheerio=require('cheerio');
 const axios=require('axios');
-
+const Story=require('../models/storyModel')
 const url="https://news.ycombinator.com/"
 
 
@@ -18,12 +18,22 @@ exports.scrape=async(req,res)=>{
             const title=anchor.text()
             const link=anchor.attr("href")
 
-            stories.push({
-                title,link,score,author,time
-            })
+           const story= await Story.create(
+                {
+                    title:title,
+                    url:link,
+                    author:author,
+                    score:score,
+                    postedAt:time
+
+                }
+            )
+            // stories.push({
+            //     title,link,score,author,time
+            // })
         })
         // console.log(stories)
-        return res.json({result:stories})
+        return res.json({result:"Stories added to db!"})
        }
        catch(error){
         console.log("error scraping the site!",error)
