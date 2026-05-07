@@ -1,5 +1,5 @@
 const Story=require("../models/storyModel")
-const mongoose=require("mongoose")
+
 
 exports.getAll=async(req,res)=>{
     try{
