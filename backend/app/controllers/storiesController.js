@@ -1,4 +1,5 @@
 const Story=require("../models/storyModel")
+const mongoose=require("mongoose")
 
 exports.getAll=async(req,res)=>{
     try{
@@ -10,4 +11,17 @@ exports.getAll=async(req,res)=>{
         return res.status(500).json({message:"Error fetching all stories"})
     }
      
+}
+
+
+exports.getOne=async(req,res)=>{
+    try{
+        const id=req.params.id
+        const story=await Story.findById({_id:id})
+        return res.json({result:story})
+    }
+    catch(error){
+        console.log("Error while fetching a story",error)
+        res.status(500).json({message:"error while fetching a story"})
+    }
 }
