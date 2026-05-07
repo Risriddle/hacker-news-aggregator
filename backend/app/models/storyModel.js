@@ -12,7 +12,7 @@ const storySchema=new mongoose.Schema(
             type:String
         },
         score:{
-            type:String
+            type:Number
         },
         postedAt:{
             type:String

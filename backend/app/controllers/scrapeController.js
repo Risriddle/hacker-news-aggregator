@@ -18,12 +18,14 @@ exports.scrape=async(req,res)=>{
             const title=anchor.text()
             const link=anchor.attr("href")
 
+            const sc=score.split(" ")[0];
+
             await Story.create(
                 {
                     title:title,
                     url:link,
                     author:author,
-                    score:score,
+                    score:sc,
                     postedAt:time
 
                 }
