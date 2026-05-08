@@ -4,11 +4,17 @@ const port=8000;
 const storyRouter=require("./app/routes/story");
 const authRouter=require("./app/routes/auth")
 const {scrapeStories}=require("./app/scraper")
+const cors=require("cors")
 
 require('dotenv').config();
 const dbConnect=require('./app/database/dbConnect')
 
-
+const corsOptions={
+    origin:'http://localhost:5173/',
+    methods:['GET','POST'],
+    allowedHeaders:['Content-Type','Authorization']
+}
+app.use(cors())
 dbConnect.connect_db();
 scrapeStories();
 app.use(express.json())
