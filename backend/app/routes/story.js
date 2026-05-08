@@ -6,7 +6,10 @@ const { verifyJwt_token } = require("../middleware/authMiddleware")
 
 Router.post('/scrape',scrapeController.scrape)
 Router.get("/stories",storiesController.getAll)
+Router.get("/stories/bookmarked",verifyJwt_token,storiesController.getBookmarkedStories)
 Router.get("/stories/:id",storiesController.getOne)
 Router.post("/stories/:id/bookmark",verifyJwt_token,storiesController.bookmark)
+
+
 
 module.exports=Router;

@@ -59,3 +59,18 @@ exports.bookmark=async(req,res)=>{
     }
     
 }
+
+
+
+exports.getBookmarkedStories=async(req,res)=>{
+    
+    try{
+        const stories=await Story.find({bookmarked:true})
+        return res.json({result:stories})
+    }
+    catch(error){
+        console.log("error fetching all bookmarked stories",error)
+        return res.status(500).json({message:"Error fetching all bookmarked stories"})
+    }
+    
+}
