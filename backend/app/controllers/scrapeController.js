@@ -37,5 +37,6 @@ exports.scrape=async(req,res)=>{
        }
        catch(error){
         console.log("error scraping the site!",error)
+        return res.status(500).json({message:"error scraping site!"})
        }
 }

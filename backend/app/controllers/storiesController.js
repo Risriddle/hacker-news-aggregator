@@ -1,3 +1,4 @@
+
 const Story=require("../models/storyModel")
 
 
@@ -24,4 +25,37 @@ exports.getOne=async(req,res)=>{
         console.log("Error while fetching a story",error)
         res.status(500).json({message:"error while fetching a story"})
     }
+}
+
+
+
+
+exports.bookmark=async(req,res)=>{
+    try{
+    const id=req.params.id
+    if(!id){
+        return res.status(404).json({message:"id not found"})
+    }
+    const story=await Story.findById({_id:id})
+    if(!story){
+        return res.status(404).json({message:"story not found"})
+    }
+    isBookmarked=story.bookmarked
+    console.log(isBookmarked,"is bookmarked-----------")
+    if(isBookmarked){
+        const toggle=story.bookmarked=false
+        await Story.findByIdAndUpdate(id,{bookmarked:toggle})
+    }
+    else{
+        const toggle=story.bookmarked=true
+        await Story.findByIdAndUpdate(id,{bookmarked:toggle})
+    }
+    
+    return res.json({message:"bookmark toggle done!"})
+    }
+    catch(error){
+        console.log("error while bookmarking",error)
+        return res.json({message:"error while bookmarking"})
+    }
+    
 }
