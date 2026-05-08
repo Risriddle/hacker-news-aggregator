@@ -3,13 +3,14 @@ const app=express();
 const port=8000;
 const storyRouter=require("./app/routes/story");
 const authRouter=require("./app/routes/auth")
+const {scrapeStories}=require("./app/scraper")
 
 require('dotenv').config();
 const dbConnect=require('./app/database/dbConnect')
 
 
 dbConnect.connect_db();
-
+scrapeStories();
 app.use(express.json())
 
 
