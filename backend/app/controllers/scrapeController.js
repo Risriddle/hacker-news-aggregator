@@ -9,7 +9,8 @@ exports.scrape=async(req,res)=>{
         const {data}=await axios(url);
         const $=cheerio.load(data)
         
-        $('tr.athing').each(async(i,el)=>{
+        const rows=$('tr.athing').slice(0,10)
+        for(const el of rows){
             const anchor=$(el).find(".titleline > a")
             const subtext=$(el).next().find('.subtext')
             const score=subtext.find('.score').text()
@@ -20,20 +21,39 @@ exports.scrape=async(req,res)=>{
 
             const sc=score.split(" ")[0];
 
-            await Story.create(
-                {
-                    title:title,
-                    url:link,
-                    author:author,
-                    score:sc,
-                    postedAt:time
-
-                }
-            )
+            const exists=await Story.findOne({url:link})
             
-        })
+            if(exists){
+                 await Story.findOneAndUpdate(
+                      { url: link },
+                        {
+                            title,
+                            author,
+                            score: sc,
+                            postedAt: time,
+                            bookmarked:exists.bookmarked
+                        },
+                        {
+                            upsert: true,
+                            new: true
+                        })
+            }
+            else{
+            await Story.create(
+                            {
+                                title:title,
+                                url:link,
+                                author:author,
+                                score:sc,
+                                postedAt:time
+
+                            }
+                        )
+                        }
+            
+        }
         
-        return res.json({result:"Stories added to db!"})
+        return res.json({result:"top 10 Stories added to db!"})
        }
        catch(error){
         console.log("error scraping the site!",error)
