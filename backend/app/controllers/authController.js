@@ -1,5 +1,7 @@
 const  User=require("../models/userModel")
 const bcrypt=require("bcrypt")
+require("dotenv").config();
+const jwt=require("jsonwebtoken")
 
 exports.register=async(req,res)=>{
 try{
@@ -40,8 +42,8 @@ exports.login=async(req,res)=>{
     if(!isPasswordValid){
     return res.status(401).json({message:"Invalid Credentials"})
     }
-
-    return res.json({result:"User logged in!; "+user})
+    const token=generateJWT_token(user._id)
+    return res.json({success:true,jwtToken:token,data:user})
 }
 catch(error){
     console.log("Error logging user",error)
@@ -49,3 +51,12 @@ catch(error){
 }
 
 }
+
+
+
+const generateJWT_token=(id)=>{
+    const secret=process.env.JWT_SECRET_KEY;
+    const token=jwt.sign({id},secret,{expiresIn:"1h"})
+    return token
+}
+
