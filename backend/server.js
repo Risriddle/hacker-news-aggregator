@@ -7,7 +7,12 @@ const authRouter=require("./app/routes/auth")
 require('dotenv').config();
 const dbConnect=require('./app/database/dbConnect')
 
+
 dbConnect.connect_db();
+
+app.use(express.json())
+
+
 app.use("/api/",storyRouter)
 app.use("/api/auth/",authRouter)
 
