@@ -19,12 +19,13 @@ function Login() {
 
     const data = await response.json();
     if (!response.ok) {
-      // Handle error response
+      
       console.log(data)
       return;
     }
 console.log(data,"logged in")
-    // Handle success flow
+localStorage.setItem('user',JSON.stringify(data.data))
+localStorage.setItem('token',data.jwtToken)
   }
 
   return (
