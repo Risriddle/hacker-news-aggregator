@@ -1,6 +1,9 @@
-
+import {AuthContext} from '../context/AuthContext'
+import {useContext} from 'react'
 
 function Login() {
+    const {login}=useContext(AuthContext)
+
   async function handleSubmit(event) {
     
     event.preventDefault();
@@ -24,6 +27,7 @@ function Login() {
       return;
     }
 console.log(data,"logged in")
+login(data.data,data.jwtToken)
 localStorage.setItem('user',JSON.stringify(data.data))
 localStorage.setItem('token',data.jwtToken)
   }
