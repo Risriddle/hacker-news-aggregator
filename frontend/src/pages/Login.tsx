@@ -1,14 +1,19 @@
-import {AuthContext} from '../context/AuthContext'
-import {useContext} from 'react'
+
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import '../css/Auth.css';
 
 function Login() {
-    const {login}=useContext(AuthContext)
+  const { login } = useContext(AuthContext);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event) {
-    
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError('');
+    setLoading(true);
 
-    const formElement = event.target;
+    const formElement = event.target as HTMLFormElement;
     const formData = new FormData(formElement);
 
     const response = await fetch('http://localhost:8000/api/auth/login', {
@@ -21,42 +26,72 @@ function Login() {
     });
 
     const data = await response.json();
+    setLoading(false);
+
     if (!response.ok) {
-      
-      console.log(data)
+      setError(data.message || 'Invalid email or password.');
       return;
     }
-console.log(data,"logged in")
-login(data.data,data.jwtToken)
-localStorage.setItem('user',JSON.stringify(data.data))
-localStorage.setItem('token',data.jwtToken)
+
+    console.log(data, "logged in");
+    login(data.data, data.jwtToken);
+    localStorage.setItem('user', JSON.stringify(data.data));
+    localStorage.setItem('token', data.jwtToken);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="email-input">Email</label>
-      <input
-        
-        id="email-input"
-        name="email"
-        required
-        type="email"
-      />
-      <label htmlFor="password-input">Password</label>
-      <input
-        aria-describedby="password-hint"
-        id="password-input"
-        name="password"
-        required
-        type="password"
-      />
-      <div id="password-hint">
-        Your password must be at least 8 characters long.
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-card__brand">
+          <span className="auth-card__brand-dot" />
+          Readmark
+        </div>
+
+        <h1 className="auth-card__title">Welcome back</h1>
+        <p className="auth-card__subtitle">Log in to see your saved stories.</p>
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-field">
+            <label htmlFor="email-input" className="auth-label">Email</label>
+            <input
+              id="email-input"
+              name="email"
+              required
+              type="email"
+              className="auth-input"
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <div className="auth-field">
+            <label htmlFor="password-input" className="auth-label">Password</label>
+            <input
+              aria-describedby="password-hint"
+              id="password-input"
+              name="password"
+              required
+              type="password"
+              className="auth-input"
+              placeholder="Your password"
+            />
+            <p id="password-hint" className="auth-hint">
+              Your password must be at least 8 characters long.
+            </p>
+          </div>
+
+          {error && <p className="auth-error">{error}</p>}
+
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? <span className="auth-btn__spinner" /> : 'Log in'}
+          </button>
+
+          <p className="auth-footer-link">
+            Don't have an account? <a href="/signup">Sign up</a>
+          </p>
+        </form>
       </div>
-      <button>Login</button>
-    </form>
+    </div>
   );
 }
 
-
-export default Login
+export default Login;

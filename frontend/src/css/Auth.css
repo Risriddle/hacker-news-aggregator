@@ -1,0 +1,218 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Mono:wght@400;500&display=swap');
+
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f2ee;
+  font-family: 'DM Mono', 'Courier New', monospace;
+  padding: 1.5rem;
+}
+
+
+.auth-card {
+  background: #faf9f7;
+  border: 1px solid #e0dbd3;
+  border-radius: 16px;
+  padding: 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+.auth-card__brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b5631a;
+  margin-bottom: 2rem;
+}
+
+.auth-card__brand-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b5631a;
+  display: inline-block;
+}
+
+
+.auth-card__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1a1512;
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.auth-card__subtitle {
+  font-size: 0.73rem;
+  color: #9e9388;
+  margin: 0 0 2rem;
+  letter-spacing: 0.02em;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.auth-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a5148;
+}
+
+.auth-input {
+  font-family: 'DM Mono', 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #1a1512;
+  background: #fff;
+  border: 1px solid #d9d3cb;
+  border-radius: 9px;
+  padding: 0.65rem 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-input::placeholder {
+  color: #c2bab1;
+}
+
+.auth-input:focus {
+  border-color: #b5631a;
+  box-shadow: 0 0 0 3px rgba(181, 99, 26, 0.1);
+}
+
+.auth-hint {
+  font-size: 0.67rem;
+  color: #b0a89e;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+
+.auth-error {
+  font-size: 0.72rem;
+  color: #c0392b;
+  background: #fdf0ee;
+  border: 1px solid #f5c6c0;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+
+.auth-btn {
+  margin-top: 0.25rem;
+  font-family: 'DM Mono', 'Courier New', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #faf9f7;
+  background: #1a1512;
+  border: none;
+  border-radius: 9px;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.auth-btn:hover:not(:disabled) {
+  background: #2e2720;
+}
+
+.auth-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+.auth-btn__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+.auth-footer-link {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #9e9388;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.auth-footer-link a {
+  color: #b5631a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer-link a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+
+.auth-success {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #eef7f2;
+  border: 1px solid #b5ddc8;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  font-size: 0.75rem;
+  color: #2a6645;
+  letter-spacing: 0.02em;
+}
+
+.auth-success__icon {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2a6645;
+}

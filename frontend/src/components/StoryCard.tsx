@@ -1,51 +1,78 @@
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import {useState} from 'react'
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import axios from "axios"
+import Tooltip from '@mui/material/Tooltip';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import type { Story } from '../interfaces/Story';
+import '../css/StoryCard.css';
 
-
-
-
-export default function StoryCard({story,onToggleBookmark}) {
-
-
-
-  return (
-    
-    <Card sx={{ maxWidth: 345 }}>
-      
-      {story.map((st)=>(
-        
-        <>
-<CardContent key={st._id}>
-        <Typography gutterBottom variant="h5" component="div">
-          {st.title}
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-         by {st.author}
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-         {st.score} points| {st.postedAt}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        
-        <Button size="small" onClick={()=>onToggleBookmark(st._id)}>
-          
-            {(st.bookmarked)?(<BookmarkIcon></BookmarkIcon>):(<BookmarkBorderIcon></BookmarkBorderIcon>) }</Button>
-          
-
-        <a href={st.url} target="_blank" rel="noopener noreferrer">
-           Read More</a>
-      </CardActions>
-      </>
-      ))}
-    </Card>
-  );
+interface StoryCardProps {
+  story: Story[];
+  onToggleBookmark: (id: string) => void;
+  isAuthenticated: boolean;
 }
 
+export default function StoryCard({ story, onToggleBookmark, isAuthenticated }: StoryCardProps) {
+  return (
+    <div className="story-grid">
+      {story.map((st) => (
+        <Card key={st._id} className="story-card" elevation={0}>
+          <CardContent className="story-card__content">
+            <div className="story-card__meta-top">
+              <span className="story-card__score">{st.score} pts</span>
+              <span className="story-card__date">{st.postedAt}</span>
+            </div>
+
+            <Typography className="story-card__title" variant="h6" component="h2">
+              {st.title}
+            </Typography>
+
+            <Typography className="story-card__author" variant="body2">
+              by {st.author}
+            </Typography>
+          </CardContent>
+
+          <CardActions className="story-card__actions">
+            <Tooltip
+              title={isAuthenticated ? '' : 'Log in to bookmark stories'}
+              arrow
+              placement="top"
+              disableHoverListener={isAuthenticated}
+              disableFocusListener={isAuthenticated}
+            >
+              
+              <span>
+                <button
+                  className={`bookmark-btn ${st.bookmarked ? 'bookmarked' : ''} ${!isAuthenticated ? 'locked' : ''}`}
+                  onClick={() => onToggleBookmark(st._id)}
+                  aria-label={isAuthenticated ? (st.bookmarked ? 'Remove bookmark' : 'Add bookmark') : 'Log in to bookmark'}
+                >
+                  {!isAuthenticated
+                    ? <LockOutlinedIcon fontSize="small" />
+                    : st.bookmarked
+                      ? <BookmarkIcon fontSize="small" />
+                      : <BookmarkBorderIcon fontSize="small" />
+                  }
+                  <span>{isAuthenticated ? (st.bookmarked ? 'Saved' : 'Save') : 'Save'}</span>
+                </button>
+              </span>
+            </Tooltip>
+
+            <a
+              href={st.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="read-more-link"
+            >
+              Read <OpenInNewIcon fontSize="inherit" />
+            </a>
+          </CardActions>
+        </Card>
+      ))}
+    </div>
+  );
+}

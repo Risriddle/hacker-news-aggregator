@@ -6,11 +6,13 @@ export const AuthProvider=({children})=>{
 
     const[user,setUser]=useState(null)
     const[token,setToken]=useState(localStorage.getItem('token'))
-
+    
     const login=(userData,jwt)=>{
         setUser(userData)
         setToken(jwt)
         localStorage.setItem('token',jwt)
+        
+        
     
     }
 
@@ -19,6 +21,7 @@ export const AuthProvider=({children})=>{
         setToken(null)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
+      
     }
 
 return(
