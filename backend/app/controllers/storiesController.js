@@ -51,7 +51,7 @@ exports.bookmark=async(req,res)=>{
         await Story.findByIdAndUpdate(id,{bookmarked:toggle})
     }
     
-    return res.json({message:"bookmark toggle done!"})
+    return res.json({sucess:true,message:"bookmark toggle done!"})
     }
     catch(error){
         console.log("error while bookmarking",error)
