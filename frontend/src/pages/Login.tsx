@@ -1,12 +1,14 @@
 
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import {useNavigate} from "react-router-dom"
 import '../css/Auth.css';
 
 function Login() {
   const { login } = useContext(AuthContext);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate=useNavigate();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,6 +39,7 @@ function Login() {
     login(data.data, data.jwtToken);
     localStorage.setItem('user', JSON.stringify(data.data));
     localStorage.setItem('token', data.jwtToken);
+    navigate("/",{replace:true});
   }
 
   return (

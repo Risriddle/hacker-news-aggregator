@@ -1,12 +1,14 @@
 
 
 import { useState } from 'react';
+import {useNavigate} from "react-router-dom"
 import '../css/Auth.css';
 
 function SignUp() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+const navigate=useNavigate()
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,7 +36,8 @@ function SignUp() {
     }
 
     setSuccess(true);
-    // Handle success flow
+    navigate("/login",{replace:true});
+    
   }
 
   return (

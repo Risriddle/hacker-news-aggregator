@@ -3,6 +3,7 @@ import axios from "axios"
 import type { Story } from '../interfaces/Story';
 import StoryCard from '../components/StoryCard';
 import { AuthContext } from '../context/AuthContext'; 
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import '../css/Stories.css';
 
 function Stories() {
@@ -59,12 +60,34 @@ function Stories() {
 
   return (
     <div className="stories-page">
+      {/* <header className="stories-header">
+        <p className="stories-header__label">Curated Reads</p>
+        <h1 className="stories-header__title">Stories</h1>
+        <p className="stories-header__count">
+          {loading ? 'Loading…' : `${data.length} stories`}
+        </p>
+      </header> */}
+
+
       <header className="stories-header">
         <p className="stories-header__label">Curated Reads</p>
         <h1 className="stories-header__title">Stories</h1>
         <p className="stories-header__count">
           {loading ? 'Loading…' : `${data.length} stories`}
         </p>
+
+        <div className="stories-header__nav">
+          {isAuthenticated ? (
+            <a href="/bookmarks" className="nav-btn nav-btn--bookmarks">
+              <BookmarkIcon fontSize="small" /> Bookmarks
+            </a>
+          ) : (
+            <a href="/login" className="nav-btn nav-btn--login">
+              Log in to save stories
+            </a>
+          )}
+        </div>
+
       </header>
 
       <main className="stories-main">
