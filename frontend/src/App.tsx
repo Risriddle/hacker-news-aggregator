@@ -1,5 +1,7 @@
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom'
 import Stories from './pages/Stories'
+import Login from "./pages/Login"
+import SignUp from "./pages/SignUp"
 // import './App.css'
 
 function App() {
@@ -12,9 +14,9 @@ function App() {
         <div>
          <Router>
           <Routes>
-            <Route path="/" element={<Stories/>}>
-             
-            </Route>
+            <Route path="/" element={<Stories/>}></Route>
+            <Route path="/login" element={<Login/>}></Route>
+            <Route path="/signup" element={<SignUp/>}></Route>
           </Routes>
          </Router>
         </div>

@@ -8,9 +8,9 @@ try{
     
     const {email,password}=req.body;
     const user=User.find({email})
-    if(user){
-        return res.json({message:"user already exists!"})
-    }
+    // if(user){
+    //     return res.json({message:"user already exists!"})
+    // }
     const hashedPassword=await bcrypt.hash(password,10)
 
     await User.create({
