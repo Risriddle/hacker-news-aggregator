@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react'
 import axios from "axios"
 import type {Story}  from '../interfaces/Story';
-
+import StoryCard from '../components/StoryCard';
 
 
 function Stories() {
@@ -16,34 +16,14 @@ useEffect(()=>{
     .catch((err)=>{
         console.log("eror fetching data",err)
     })
-})
+},[])
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-         
-        </div>
-        <div>
-         <ul>
-          {
-            data.map((story)=>(
-                <li key={story._id}>{story.title}</li>
-            ))
-          }
-
-         </ul>
-          
-        </div>
-        
-      </section>
-
-      <div className="ticks"></div>
-
+    <div className="stories">
+      <StoryCard story={data} />
+    </div>
       
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
     </>
   )
 }
