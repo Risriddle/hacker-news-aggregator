@@ -7,12 +7,9 @@ import {ProtectedRoute} from './components/ProtectedRoute'
 
 
 function App() {
-
-
   return (
     <>
       <section id="center">
-        
         <div>
          <Router>
           <Routes>
@@ -27,8 +24,6 @@ function App() {
       </section>
 
       <div className="ticks"></div>
-
-      
       <div className="ticks"></div>
       <section id="spacer"></section>
     </>

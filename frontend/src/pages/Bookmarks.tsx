@@ -16,7 +16,7 @@ function Bookmarks() {
     )
       .then((res) => {
         console.log(res.data, "data from bookmarks");
-        setData(res.data.result);
+        setData(res.data.result.bookmarks);
       })
       .catch((err) => {
         console.log("error fetching data", err);
@@ -75,7 +75,8 @@ function Bookmarks() {
           <StoryCard
             story={data}
             onToggleBookmark={toggleBookmark}
-            isAuthenticated={true} 
+            isAuthenticated={true}
+            bookmarks={data}
           />
         )}
       </main>

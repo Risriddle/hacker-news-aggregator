@@ -18,10 +18,10 @@ const storySchema=new mongoose.Schema(
         postedAt:{
             type:String
         },
-        bookmarked:{
-            type:Boolean,
-            default:false
-        }
+        // bookmarked:{
+        //     type:Boolean,
+        //     default:false
+        // }
     
     }
 )

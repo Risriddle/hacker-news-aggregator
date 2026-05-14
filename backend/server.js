@@ -2,6 +2,7 @@ const express=require('express');
 const app=express();
 const port=8000;
 const storyRouter=require("./app/routes/story");
+const userRouter=require("./app/routes/user");
 const authRouter=require("./app/routes/auth")
 const {scrapeStories}=require("./app/scraper")
 const cors=require("cors")
@@ -16,11 +17,13 @@ const corsOptions={
 }
 app.use(cors())
 dbConnect.connect_db();
-scrapeStories();
+
 app.use(express.json())
 
+// scrapeStories();
 
 app.use("/api/",storyRouter)
+app.use("/api/user/",userRouter)
 app.use("/api/auth/",authRouter)
 
 app.listen(port,function(err)

@@ -22,25 +22,25 @@ exports.scrapeStories=async()=>{
 
             const sc=score.split(" ")[0];
 
-            const exists=await Story.findOne({url:link})
+            // const exists=await Story.findOne({url:link})
             
-            if(exists){
-                 await Story.findOneAndUpdate(
-                      { url: link },
-                        {
-                            title,
-                            author,
-                            score: sc,
-                            postedAt: time,
-                            bookmarked:exists.bookmarked
-                        },
-                        {
-                            upsert: true,
-                           returnDocument: "after"
+            // if(exists){
+            //      await Story.findOneAndUpdate(
+            //           { url: link },
+            //             {
+            //                 title,
+            //                 author,
+            //                 score: sc,
+            //                 postedAt: time,
+            //                 // bookmarked:exists.bookmarked
+            //             },
+            //             {
+            //                 upsert: true,
+            //                returnDocument: "after"
 
-                        })
-            }
-            else{
+            //             })
+            // }
+            // else{
             await Story.create(
                             {
                                 title:title,
@@ -53,7 +53,7 @@ exports.scrapeStories=async()=>{
                         )
                         }
             
-        }
+        // }
         
         
        }

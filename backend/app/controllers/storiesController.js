@@ -1,6 +1,6 @@
 
 const Story=require("../models/storyModel")
-
+const User=require("../models/userModel")
 
 exports.getAll=async(req,res)=>{
     try{
@@ -32,26 +32,33 @@ exports.getOne=async(req,res)=>{
 
 exports.bookmark=async(req,res)=>{
     try{
-    const id=req.params.id
-    if(!id){
+    const story_id=req.params.id
+    const user_id=req.user.id
+   
+console.log(user_id,"user id in bookmrk api")
+    if(!story_id){
         return res.status(404).json({message:"id not found"})
     }
-    const story=await Story.findById({_id:id})
+
+    const story=await Story.findById({_id:story_id})
     if(!story){
         return res.status(404).json({message:"story not found"})
     }
-    isBookmarked=story.bookmarked
-    console.log(isBookmarked,"is bookmarked-----------")
-    if(isBookmarked){
-        const toggle=story.bookmarked=false
-        await Story.findByIdAndUpdate(id,{bookmarked:toggle})
+   
+    const isPresent=(await User.findById(user_id)).bookmarks.includes(story_id)
+
+    if(!isPresent){
+        
+        const user=await User.findByIdAndUpdate(user_id,{$push:{bookmarks:story_id}},{ after: true })
+        return res.json({success:true,message:"bookmark toggle done!",user:user})
     }
     else{
-        const toggle=story.bookmarked=true
-        await Story.findByIdAndUpdate(id,{bookmarked:toggle})
+        
+       const user= await User.findByIdAndUpdate(user_id,{$pull:{bookmarks:story_id}},{ after: true })
+       return res.json({success:true,message:"bookmark toggle done!",user:user})
     }
     
-    return res.json({success:true,message:"bookmark toggle done!"})
+    
     }
     catch(error){
         console.log("error while bookmarking",error)
@@ -63,9 +70,9 @@ exports.bookmark=async(req,res)=>{
 
 
 exports.getBookmarkedStories=async(req,res)=>{
-    
+    const user_id=req.user.id
     try{
-        const stories=await Story.find({bookmarked:true})
+        const stories=await User.findById(user_id).populate("bookmarks")
         return res.json({result:stories})
     }
     catch(error){

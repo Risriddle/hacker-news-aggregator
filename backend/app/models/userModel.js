@@ -6,7 +6,11 @@ const userSchema=new mongoose.Schema({
     },
     password:{
         type:String
-    }
+    },
+    bookmarks:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Story"
+    }]
 })
 
 
