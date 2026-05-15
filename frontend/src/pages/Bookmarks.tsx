@@ -1,5 +1,5 @@
 import { useState, useEffect,useContext } from 'react'
-import axios from "axios"
+import api from "../api/axios"
 import type { Story } from '../interfaces/Story';
 import StoryCard from '../components/StoryCard';
 import { AuthContext } from '../context/AuthContext'; 
@@ -11,7 +11,7 @@ function Bookmarks() {
   const { token } = useContext(AuthContext);  
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/stories/bookmarked`,
+    api.get(`/stories/bookmarked`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
       .then((res) => {
@@ -28,13 +28,13 @@ function Bookmarks() {
   const toggleBookmark = (id: string) => {
         setData((prev) => prev.filter((story) => story._id !== id));
 
-    axios.post(`http://localhost:8000/api/stories/${id}/bookmark`, {},
+    api.post(`/stories/${id}/bookmark`, {},
       { headers: { Authorization: `Bearer ${token}` } }
     )
       .then((res) => {
         console.log(res.data, "bookmark toggled");
         if (!res.data.success) {
-          axios.get(`http://localhost:8000/api/stories/bookmarked`,
+          api.get(`/stories/bookmarked`,
             { headers: { Authorization: `Bearer ${token}` } }
           ).then((res) => setData(res.data.result));
         }
@@ -42,7 +42,7 @@ function Bookmarks() {
       .catch((err) => {
         console.log("error removing bookmark", err);
         
-        axios.get(`http://localhost:8000/api/stories/bookmarked`,
+        api.get(`/stories/bookmarked`,
           { headers: { Authorization: `Bearer ${token}` } }
         ).then((res) => setData(res.data.result));
       });

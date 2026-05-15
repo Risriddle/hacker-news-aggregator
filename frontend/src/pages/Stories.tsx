@@ -1,11 +1,11 @@
 
 import { useState, useEffect, useContext } from 'react';
-import axios from "axios";
 import type { Story } from '../interfaces/Story';
 import StoryCard from '../components/StoryCard';
 import { AuthContext } from '../context/AuthContext';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import '../css/Stories.css';
+import api from '../api/axios'
 
 function Stories() {
   const [data, setData] = useState<Story[]>([]);
@@ -18,13 +18,7 @@ function Stories() {
 
 const fetchCurrentUser=async()=>{
   const user_id=user._id
-          axios.get(`http://localhost:8000/api/user/getUser/${user_id}`,
-              {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-          )
+          api.get(`/user/getUser/${user_id}`)
       .then((res) => {
         setUser(res.data.userData);
       })
@@ -42,7 +36,7 @@ const fetchCurrentUser=async()=>{
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/stories")
+    api.get("/stories")
       .then((res) => {
         setData(res.data.result);
       })
@@ -58,15 +52,8 @@ const fetchCurrentUser=async()=>{
 
   try {
 
-    const res = await axios.post(
-      `http://localhost:8000/api/stories/${id}/bookmark`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+    const res = await api.post(
+      `/stories/${id}/bookmark`);
 
     setUser(res.data.user);
 
