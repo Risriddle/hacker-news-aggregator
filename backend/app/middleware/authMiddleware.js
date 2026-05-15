@@ -16,6 +16,10 @@ exports.verifyJwt_token=(req,res,next)=>{
         next();
     }
     catch(error){
+        if(error.name==="TokenExpiredError"){
+
+            return res.status(401).json({message:"Access token expired"})
+        }
         return res.status(403).json({message:"forbidden access:invalid or expired token"})
     }
     

@@ -4,6 +4,6 @@ const authController=require("../controllers/authController")
 
 Router.post("/register",authController.register)
 Router.post("/login",authController.login)
-
+Router.post("/refreshToken",authController.sendAccessToken)
 
 module.exports=Router

@@ -8,9 +8,6 @@ try{
     
     const {email,password}=req.body;
     const user=User.find({email})
-    // if(user){
-    //     return res.json({message:"user already exists!"})
-    // }
     const hashedPassword=await bcrypt.hash(password,10)
 
     await User.create({
@@ -47,6 +44,14 @@ exports.login=async(req,res)=>{
     return res.status(401).json({message:"Invalid Credentials"})
     }
     const token=generateJWT_token(user._id)
+    const refreshToken=generateRefresh_token(user._id)
+
+    res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure:true,
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000
+    });
     return res.json({success:true,jwtToken:token,data:user})
 }
 catch(error){
@@ -58,9 +63,42 @@ catch(error){
 
 
 
+exports.sendAccessToken=async(req,res)=>{
+     const token=req.cookies.refreshToken
+     if(!token){
+        return res.status(401).json({message:"no refresh token found!"})
+     }
+
+     try{
+          const decoded=jwt.verify(token,process.env.REFRESH_SECRET_KEY)
+          const accessToken=generateJWT_token(decoded.id)
+          const refToken=generateRefresh_token(decoded.id)
+          res.cookie('refreshToken',refToken,{
+            httpOnly:true,
+            sameSite:'strict',
+            secure:true,
+            maxAge:24*60*60*1000
+          })
+          return res.status(200).json({accessToken:accessToken})
+
+     }
+     catch(error){
+        return res.status(401).json({message:"invalid or expired refresh token!"})
+     }
+
+}
+
+
+
 const generateJWT_token=(id)=>{
     const secret=process.env.JWT_SECRET_KEY;
     const token=jwt.sign({id},secret,{expiresIn:"1h"})
     return token
+}
+
+const generateRefresh_token=(id)=>{
+    const secret=process.env.REFRESH_SECRET_KEY;
+    const refreshToken=jwt.sign({id},secret,{expiresIn:"1d"})
+    return refreshToken
 }
 
