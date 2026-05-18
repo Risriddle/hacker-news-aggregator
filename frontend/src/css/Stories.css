@@ -34,6 +34,17 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-btn--logout {
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
 .nav-btn--bookmarks {
   background: #1a1512;
   color: #faf9f7;

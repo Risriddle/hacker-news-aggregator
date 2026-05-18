@@ -6,11 +6,12 @@ import { AuthContext } from '../context/AuthContext';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import '../css/Stories.css';
 import api from '../api/axios'
+import { Logout } from '@mui/icons-material';
 
 function Stories() {
   const [data, setData] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
-  const { token, user,setUser } = useContext(AuthContext);
+  const { token, user,setUser,logout } = useContext(AuthContext);
 
 
   const isAuthenticated = !!token;
@@ -63,6 +64,19 @@ const fetchCurrentUser=async()=>{
 };
 
 
+const handleLogout=async()=>{
+try {
+    await api.post('/auth/logout');
+
+   logout()
+
+    // navigate('/login', { replace: true });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   return (
     <div className="stories-page">
 
@@ -78,16 +92,26 @@ const fetchCurrentUser=async()=>{
         </p>
 
         <div className="stories-header__nav">
-          {isAuthenticated ? (
-            <a href="/bookmarks" className="nav-btn nav-btn--bookmarks">
-              <BookmarkIcon fontSize="small" />
-              Bookmarks
-            </a>
-          ) : (
-            <a href="/login" className="nav-btn nav-btn--login">
-              Log in to save stories
-            </a>
-          )}
+         {isAuthenticated ? (
+  <div className="nav-actions">
+    <a href="/bookmarks" className="nav-btn nav-btn--bookmarks">
+      <BookmarkIcon fontSize="small" />
+      Bookmarks
+    </a>
+
+    <button
+      className="nav-btn nav-btn--bookmarks nav-btn--logout"
+      onClick={handleLogout}
+    >
+      <Logout fontSize="small" />
+      Sign Out
+    </button>
+  </div>
+) : (
+  <a href="/login" className="nav-btn nav-btn--login">
+    Log in to save stories
+  </a>
+)}
         </div>
       </header>
 
@@ -104,6 +128,7 @@ const fetchCurrentUser=async()=>{
             onToggleBookmark={toggleBookmark}
             isAuthenticated={isAuthenticated}
             bookmarks={user?.bookmarks || []}
+            showBookmarkButton={true}
           />
         )}
       </main>

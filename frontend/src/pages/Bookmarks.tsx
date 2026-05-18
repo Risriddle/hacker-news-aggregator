@@ -77,6 +77,7 @@ function Bookmarks() {
             onToggleBookmark={toggleBookmark}
             isAuthenticated={true}
             bookmarks={data}
+            showBookmarkButton={false}
           />
         )}
       </main>

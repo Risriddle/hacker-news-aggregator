@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import {useNavigate} from "react-router-dom"
+import api from '../api/axios'
 import '../css/Auth.css';
 
 function SignUp() {
@@ -18,27 +19,30 @@ const navigate=useNavigate()
     const formElement = event.target as HTMLFormElement;
     const formData = new FormData(formElement);
 
-    const response = await fetch('http://localhost:8000/api/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: formData.get('email'),
-        password: formData.get('password'),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+    try {
+  setLoading(true);
 
-    const data = await response.json();
-    setLoading(false);
+   await api.post('/auth/register', {
+    email: formData.get('email'),
+    password: formData.get('password'),
+  });
 
-    if (!response.ok) {
-      setError(data.message || 'Something went wrong. Please try again.');
-      return;
-    }
+  setLoading(false);
 
-    setSuccess(true);
-    navigate("/login",{replace:true});
-    
+  setSuccess(true);
+  navigate("/login", { replace: true });
+
+} catch (error) {
+  setLoading(false);
+
+  setError(
+    error.response?.data?.message ||
+    'Something went wrong. Please try again.'
+  );
+}
   }
+
+  
 
   return (
     <div className="auth-page">

@@ -2,12 +2,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
 
 import type { Story } from '../interfaces/Story';
 
@@ -18,13 +16,15 @@ interface StoryCardProps {
   onToggleBookmark: (id: string) => void;
   isAuthenticated: boolean;
   bookmarks: string[];
+  showBookmarkButton?: boolean;
 }
 
 export default function StoryCard({
   story,
   onToggleBookmark,
   isAuthenticated,
-  bookmarks
+  bookmarks,
+  showBookmarkButton
 }: StoryCardProps) {
 
   return (
@@ -67,45 +67,26 @@ export default function StoryCard({
             </CardContent>
 
             <CardActions className="story-card__actions">
+{isAuthenticated && showBookmarkButton &&(
+  <button
+    className={`bookmark-btn ${isBookmarked ? 'bookmarked' : ''}`}
+    onClick={() => onToggleBookmark(st._id)}
+    aria-label={
+      isBookmarked
+        ? 'Remove bookmark'
+        : 'Add bookmark'
+    }
+  >
+    {isBookmarked
+      ? <BookmarkIcon fontSize="small" />
+      : <BookmarkBorderIcon fontSize="small" />
+    }
 
-              <Tooltip
-                title={isAuthenticated ? '' : 'Log in to bookmark stories'}
-                arrow
-                placement="top"
-                disableHoverListener={isAuthenticated}
-                disableFocusListener={isAuthenticated}
-              >
-
-                <span>
-                  <button
-                    className={`bookmark-btn ${isBookmarked ? 'bookmarked' : ''} ${!isAuthenticated ? 'locked' : ''}`}
-                    onClick={() => onToggleBookmark(st._id)}
-                    aria-label={
-                      isAuthenticated
-                        ? (isBookmarked
-                          ? 'Remove bookmark'
-                          : 'Add bookmark')
-                        : 'Log in to bookmark'
-                    }
-                  >
-
-                    {!isAuthenticated
-                      ? <LockOutlinedIcon fontSize="small" />
-                      : isBookmarked
-                        ? <BookmarkIcon fontSize="small" />
-                        : <BookmarkBorderIcon fontSize="small" />
-                    }
-
-                    <span>
-                      {isAuthenticated
-                        ? (isBookmarked ? 'Saved' : 'Save')
-                        : 'Save'}
-                    </span>
-
-                  </button>
-                </span>
-
-              </Tooltip>
+    <span>
+      {isBookmarked ? 'Saved' : 'Save'}
+    </span>
+  </button>
+)}
 
               <a
                 href={st.url}

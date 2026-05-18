@@ -3,6 +3,7 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import {useNavigate} from "react-router-dom"
 import '../css/Auth.css';
+import api from '../api/axios'
 
 
 function Login() {
@@ -19,29 +20,44 @@ function Login() {
     const formElement = event.target as HTMLFormElement;
     const formData = new FormData(formElement);
 
-    const response = await fetch('http://localhost:8000/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: formData.get('email'),
-        password: formData.get('password'),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    });
 
-    const data = await response.json();
-    setLoading(false);
+    try {
+  setLoading(true);
 
-    if (!response.ok) {
-      setError(data.message || 'Invalid email or password.');
-      return;
-    }
+  const response = await api.post('/auth/login', {
+    email: formData.get('email'),
+    password: formData.get('password'),
+  });
 
-    console.log(data, "logged in");
-    login(data.data, data.jwtToken);
-    localStorage.setItem('user', JSON.stringify(data.data));
-    localStorage.setItem('token', data.jwtToken);
-    navigate("/",{replace:true});
+  setLoading(false);
+
+  console.log(response.data, "logged in");
+
+  login(response.data.data, response.data.jwtToken);
+
+  localStorage.setItem(
+    'user',
+    JSON.stringify(response.data.data)
+  );
+
+  localStorage.setItem(
+    'token',
+    response.data.jwtToken
+  );
+
+  navigate("/", { replace: true });
+
+} catch (error) {
+  setLoading(false);
+
+  setError(
+    error.response?.data?.message ||
+    'Invalid email or password.'
+  );
+}
   }
+
+  
 
   return (
     <div className="auth-page">
