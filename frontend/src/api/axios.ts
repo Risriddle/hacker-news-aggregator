@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const BASE_URL="https://hacker-news-aggregator.vercel.app/_/backend"
+const BASE_URL="https://hacker-news-aggregator.vercel.app/_/backend/api"
 const api=axios.create({
     baseURL:BASE_URL,
     withCredentials:true
@@ -27,7 +27,7 @@ api.interceptors.response.use(
             originalRequest._retry=true;
             try{
                 const res = await axios.post(
-                'http://localhost:8000/api/auth/refresh',
+                'https://hacker-news-aggregator.vercel.app/_/backend/api/auth/refresh',
                 {},
                 { withCredentials:true }
                 )
