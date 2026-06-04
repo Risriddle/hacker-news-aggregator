@@ -11,7 +11,7 @@ require('dotenv').config();
 const dbConnect=require('./app/database/dbConnect')
 
 const corsOptions={
-    origin:'http://localhost:5173',
+    origin:'https://hacker-news-aggregator.vercel.app',
     methods:['GET','POST'],
     credentials:true,
     allowedHeaders:['Content-Type','Authorization']

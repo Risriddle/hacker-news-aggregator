@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const BASE_URL="http://localhost:8000/api"
+const BASE_URL="https://hacker-news-aggregator.vercel.app/_/backend"
 const api=axios.create({
     baseURL:BASE_URL,
     withCredentials:true
